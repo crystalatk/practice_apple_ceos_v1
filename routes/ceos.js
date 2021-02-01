@@ -19,16 +19,20 @@ router.get('/', (req, res) => {
 
 router.get('/:slug', (req, res) =>{
     const { slug } = req.params;
-    const capitalizeName = str => `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
-    const nameCEO = capitalizeName(slug);
-    res.render('template', {
-        locals: {
-            title: `CEO: ${nameCEO}`,
-        },
-        partials: {
-            body: "partials/ceo-details",
-        }
-    });
+    const executive = ceosModel.find(executive => executive.slug === slug);
+    if (executive) {
+        res.render('template', {
+            locals: {
+                title: `CEO: ${executive.name}`,
+                executive,
+            },
+            partials: {
+                body: "partials/ceo-details",
+            }
+        });
+    } else {
+        res.status(404).send(`No CEO found that matches slug, ${slug}`);
+    }
 });
 
 module.exports = router;

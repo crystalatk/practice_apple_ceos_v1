@@ -14,6 +14,7 @@ const app = express();
 app.engine('html', es6Renderer);
 app.set('views', 'templates');
 app.set('view engine', 'html');
+app.use(express.static('public'));
 
 const SERVER = HTTP.createServer(app);
 
